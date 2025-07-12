@@ -1,88 +1,138 @@
-import { Radio } from "antd";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Radio, RadioChangeEvent } from "antd";
 
 interface CabinProps {
-    chosen: number
-    onChange: (e: number) => void
-
+  chosen: number;
+  onChange: (value: number) => void;
 }
 
-const CabinField: React.FC<CabinProps> = (
-    {
-        chosen,
-        onChange
-    }
-) => {
-    const [value, changeValue] = useState<number>(chosen)
-    return (
-        <Radio.Group value={value} onChange={(e) => {
-            switch (e.target.value) {
-                case 0:
-                    onChange(0);
-                    changeValue(0);
-                    break
-                case 1:
-                    onChange(1);
-                    changeValue(1);
-                    break
-                case 2:
-                    onChange(2);
-                    changeValue(2);
-                    break
-                default:
-                    onChange(0)
-                    changeValue(0);
-            }
-        }} >
-            <div className="w-[430px] h-[368px] p-6 bg-white rounded-2xl shadow border border-gray-100 flex-col justify-center items-start gap-4 inline-flex">
-                <div className="self-stretch text-primary text-2xl font-bold font-['Plus Jakarta Sans'] leading-9">Cabin Class</div>
-                <div className="h-[188px] flex-col justify-center items-start gap-6 flex">
-                    <div className="self-stretch h-[188px] flex-col justify-center items-center gap-2 flex">
-                        <a className="w-[367px] py-3 justify-center items-center gap-4 inline-flex"
-                            onClick={() => {
-                                changeValue(0)
-                                onChange(0);
-                            }}
-                        >
+type CabinClass = {
+  value: number;
+  label: string;
+  description: string;
+  features: string[];
+};
 
-                            <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                                <div className="text-center text-neutral-900 text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">Economy</div>
-                            </div>
-                            <Radio value={0}>
-                            </Radio>
-                        </a>
-                        <a className="w-[367px] py-3 justify-center items-center gap-4 inline-flex"
-                            onClick={() => {
-                                changeValue(1);
-                                onChange(1);
-                            }}
-                        >
-                            <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                                <div className="text-center text-neutral-900 text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">Business</div>
-                            </div>
-                            <Radio value={1}>
-                            </Radio>
-                        </a>
-                        <a className="w-[367px] py-3 justify-center items-center gap-4 inline-flex" onClick={() => {
-                            changeValue(2);
-                            onChange(2);
-                        }}>
-                            <div className="grow shrink basis-0 flex-col justify-start items-start gap-1 inline-flex">
-                                <div className="text-center text-neutral-900 text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">First</div>
-                            </div>
-                            <Radio value={2}>
+const cabinClasses: CabinClass[] = [
+  {
+    value: 0,
+    label: "Economy",
+    description: "Comfortable and affordable",
+    features: ["Standard seat", "In-flight entertainment", "Meal service"]
+  },
+  {
+    value: 1,
+    label: "Business",
+    description: "Enhanced comfort and service",
+    features: ["Lie-flat seat", "Premium dining", "Priority boarding"]
+  },
+  {
+    value: 2,
+    label: "First",
+    description: "Ultimate luxury experience",
+    features: ["Private suite", "Gourmet cuisine", "Personal service"]
+  }
+];
 
-                            </Radio>
-                        </a>
+const CabinField: React.FC<CabinProps> = ({ chosen, onChange }) => {
+  const [value, setValue] = useState<number>(chosen);
+
+  // Sync with external changes
+  useEffect(() => {
+    setValue(chosen);
+  }, [chosen]);
+
+  const handleChange = (e: RadioChangeEvent) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+    onChange(newValue);
+  };
+
+  const handleOptionClick = (optionValue: number) => {
+    setValue(optionValue);
+    onChange(optionValue);
+  };
+
+  return (
+    <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg border border-gray-100">
+      <div className="text-primary text-2xl font-bold font-['Plus Jakarta Sans'] leading-9 mb-6">
+        Cabin Class
+      </div>
+      
+      <Radio.Group 
+        value={value} 
+        onChange={handleChange}
+        className="w-full"
+      >
+        <div className="space-y-3">
+          {cabinClasses.map((cabin) => (
+            <div
+              key={cabin.value}
+              className={`
+                w-full p-4 rounded-xl border-2 cursor-pointer transition-all duration-200 hover:shadow-md
+                ${value === cabin.value 
+                  ? 'border-primary bg-primary/5 shadow-sm' 
+                  : 'border-gray-200 hover:border-gray-300'
+                }
+              `}
+              onClick={() => handleOptionClick(cabin.value)}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <div className={`
+                        text-lg font-semibold font-['Plus Jakarta Sans'] leading-7 transition-colors
+                        ${value === cabin.value ? 'text-primary' : 'text-neutral-900'}
+                      `}>
+                        {cabin.label}
+                      </div>
+                      <div className="text-neutral-600 text-sm font-medium font-['Plus Jakarta Sans'] leading-tight">
+                        {cabin.description}
+                      </div>
                     </div>
+                  </div>
+                  
+                  {/* Features - show when selected */}
+                  {value === cabin.value && (
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      <div className="text-xs text-neutral-500 mb-2 font-medium">
+                        INCLUDES:
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {cabin.features.map((feature, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                          >
+                            ✓ {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-
+                
+                <Radio 
+                  value={cabin.value}
+                  className="ml-4"
+                />
+              </div>
             </div>
-
-        </Radio.Group>
-
-    );
+          ))}
+        </div>
+      </Radio.Group>
+      
+      {/* Price Info (Optional) */}
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <div className="text-neutral-700 text-sm font-medium">
+          {value === 0 && "💰 Best value for budget travelers"}
+          {value === 1 && "✨ Perfect balance of comfort and price"}
+          {value === 2 && "👑 Premium experience with exclusive perks"}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default CabinField;

@@ -1,212 +1,248 @@
-import Logo from "./Logo";
+import Logo from "../ui/Logo";
+import Image from "next/image";
 import planeImage from "/assets/plane-footer.svg";
 import IG from "/assets/medsos-ig.svg";
 import twitter from "/assets/medsos-twitter.svg";
 import tiktok from "/assets/medsos-tiktok.svg";
 import facebook from "/assets/medsos-fb.svg";
-import youtube from "/assets/medsos-ig.svg";
-import { Link, useNavigate } from "react-router-dom";
+import youtube from "/assets/medsos-youtube.svg";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const HomeFooter: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  
   const handleSignUp = () => {
-    navigate("/signup");
+    router.push("/signup");
   };
+  
   const handleLogin = () => {
-    navigate("/login");
+    router.push("/login");
   };
+  
   const handleStatus = () => {
-    navigate("/status");
+    router.push("/status");
   };
+  
   const handleCabin = () => {
-    navigate("/cabin");
+    router.push("/cabin");
   };
+  
   const handleBaggage = () => {
-    navigate("/baggage");
+    router.push("/baggage");
   };
+
   return (
     <div>
       <div className="w-full h-[321px] flex-col justify-between items-start inline-flex">
         <div className="w-full px-[20px] py-12 md:px-[50px] bg-white border-t border-gray-200 justify-between items-start inline-flex">
-          <div className="w-full  grid grid-cols-12 gap-5 ">
-            <div className="col-end-13 xl: col-start-1 xl:col-end-5 py-6  bg-white rounded-[16px] flex-col justify-center items-center gap-4">
+          <div className="w-full grid grid-cols-12 gap-5">
+            {/* Logo and Social Media Section */}
+            <div className="col-span-12 xl:col-span-4 py-6 bg-white rounded-[16px] flex-col justify-center items-center gap-4">
               <div className="h-[150px] flex-col justify-between items-start inline-flex">
                 <div className="flex-col justify-center items-start gap-2 flex">
                   <Logo />
                   <div className="self-stretch text-left text-gray-500 text-sm font-normal font-['Plus Jakarta Sans'] leading-tight">
-                    Navigate the Skies, Booking Made Easy{" "}
+                    Navigate the Skies, Booking Made Easy
                   </div>
-                  <div className="flex pt-5" style={{ gap: "32px" }}>
-                    <img
+                  <div className="flex pt-5 gap-8">
+                    <Image
                       src={IG}
                       alt="Instagram"
-                      className="social-media-icon"
+                      width={24}
+                      height={24}
+                      className="social-media-icon cursor-pointer hover:opacity-80 transition-opacity"
                     />
-                    <img
+                    <Image
                       src={twitter}
                       alt="Twitter"
-                      className="social-media-icon"
+                      width={24}
+                      height={24}
+                      className="social-media-icon cursor-pointer hover:opacity-80 transition-opacity"
                     />
-                    <img
+                    <Image
                       src={tiktok}
                       alt="TikTok"
-                      className="social-media-icon"
+                      width={24}
+                      height={24}
+                      className="social-media-icon cursor-pointer hover:opacity-80 transition-opacity"
                     />
-                    <img
+                    <Image
                       src={facebook}
                       alt="Facebook"
-                      className="social-media-icon"
+                      width={24}
+                      height={24}
+                      className="social-media-icon cursor-pointer hover:opacity-80 transition-opacity"
                     />
-                    <img
+                    <Image
                       src={youtube}
                       alt="YouTube"
-                      className="social-media-icon"
+                      width={24}
+                      height={24}
+                      className="social-media-icon cursor-pointer hover:opacity-80 transition-opacity"
                     />
-                  </div>
-                </div>
-
-                <div className="self-stretch justify-start items-center gap-3 inline-flex">
-                  <div className="p-2 rounded-full justify-start items-center gap-2.5 flex">
-                    <div className="w-5 h-5 relative"></div>
-                  </div>
-                  <div className="p-2 rounded-full justify-start items-center gap-2.5 flex">
-                    <div className="w-[18px] h-[18px] relative"></div>
-                  </div>
-                  <div className="p-2 rounded-full justify-start items-center gap-2.5 flex">
-                    <div className="w-5 h-5 relative"></div>
-                  </div>
-                  <div className="p-2 rounded-full justify-start items-center gap-2.5 flex">
-                    <div className="w-5 h-5 relative"></div>
-                  </div>
-                  <div className="p-2 rounded-full justify-start items-center gap-2.5 flex">
-                    <div className="w-5 h-5 relative">
-                      <div className="w-[15.83px] h-[11.67px] left-[2.08px] top-[4.17px] absolute">
-                        <div className="w-[15.83px] h-[11.67px] left-0 top-0 absolute"></div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="col-start-1 col-end-13 xl: xl:col-start-5 py-6 bg-white rounded-[16px] flex-col justify-center items-center gap-4">
-              <div className="grid grid-cols-12 xl:grid-cols-10 gap-5">
-                <div className="col-start-1 col-end-5 xl:col-start-1 xl:col-end-3 py-6 flex-col justify-start items-start gap-3 inline-flex">
+
+            {/* Navigation Links Section */}
+            <div className="col-span-12 xl:col-span-8 py-6 bg-white rounded-[16px] flex-col justify-center items-center gap-4">
+              <div className="grid grid-cols-12 xl:grid-cols-10 gap-5 w-full">
+                {/* Features Column */}
+                <div className="col-span-4 xl:col-span-2 py-6 flex-col justify-start items-start gap-3 inline-flex">
                   <div className="self-stretch text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
                     Features
                   </div>
                   <div className="flex gap-2 self-stretch text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
                     <Link
-                      type="text"
+                      href="/signup"
                       onClick={handleSignUp}
-                      className="cursor-pointer hover:text-primary"
-                      to="/signup"
+                      className="cursor-pointer hover:text-primary transition-colors"
                     >
                       Sign Up
                     </Link>
                     <p>/</p>
                     <Link
-                      type="text"
+                      href="/login"
                       onClick={handleLogin}
-                      className="cursor-pointer hover:text-primary"
-                      to="/login"
+                      className="cursor-pointer hover:text-primary transition-colors"
                     >
                       Login
                     </Link>
                   </div>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  <Link
+                    href="/explore"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Explore
-                  </a>
-                  <a className="self-stretch  text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
-                    <Link
-                      type="text"
-                      onClick={handleStatus}
-                      className="cursor-pointer hover:text-primary"
-                      to="/status"
-                    >
-                      Status
-                    </Link>
-                  </a>
+                  </Link>
+                  <Link
+                    href="/status"
+                    onClick={handleStatus}
+                    className="self-stretch cursor-pointer hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal transition-colors"
+                  >
+                    Status
+                  </Link>
                 </div>
-                <div className="col-start-5 col-end-9 xl:col-start-3 xl:col-end-5 py-6 flex-col justify-start items-start gap-3 inline-flex">
+
+                {/* Cabin Column */}
+                <div className="col-span-4 xl:col-span-2 py-6 flex-col justify-start items-start gap-3 inline-flex">
                   <div className="self-stretch text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
                     <Link
-                      type="text"
+                      href="/cabin"
                       onClick={handleCabin}
-                      className="cursor-pointer hover:text-primary"
-                      to="/cabin"
+                      className="cursor-pointer hover:text-primary transition-colors"
                     >
                       Cabin
                     </Link>
                   </div>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  <Link
+                    href="/cabin/economy"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Economy
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/cabin/business"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Business
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/cabin/first"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     First
-                  </a>
+                  </Link>
                 </div>
-                <div className="col-start-9 col-end-13 xl:col-start-5 xl:col-end-7 py-6 flex-col justify-start items-start gap-3 inline-flex">
-                  <div className="self-stretch hover:text-primary text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
+
+                {/* Baggage Column */}
+                <div className="col-span-4 xl:col-span-2 py-6 flex-col justify-start items-start gap-3 inline-flex">
+                  <div className="self-stretch text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
                     <Link
-                      type="text"
+                      href="/baggage"
                       onClick={handleBaggage}
-                      className="cursor-pointer hover:text-primary"
-                      to="/baggage"
+                      className="cursor-pointer hover:text-primary transition-colors"
                     >
                       Baggage
                     </Link>
                   </div>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  <Link
+                    href="/baggage/checked"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Checked Baggage
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/baggage/cabin"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Cabin Baggage
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/baggage/fare-types"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Fare Types
-                  </a>
+                  </Link>
                 </div>
-                <div className="col-start-1 col-end-5 xl:col-start-7 xl:col-end-9 py-6 flex-col justify-start items-start gap-3 inline-flex">
+
+                {/* Resources Column */}
+                <div className="col-span-4 xl:col-span-2 py-6 flex-col justify-start items-start gap-3 inline-flex">
                   <div className="self-stretch text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
                     Resources
                   </div>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  <Link
+                    href="/about"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     About Us
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/faqs"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     FAQs
-                  </a>
+                  </Link>
                 </div>
-                <div className="col-start-5 col-end-9 xl:col-start-9 xl:col-end-11 py-6 flex-col justify-start items-start gap-3 inline-flex">
+
+                {/* Company Column */}
+                <div className="col-span-4 xl:col-span-2 py-6 flex-col justify-start items-start gap-3 inline-flex">
                   <div className="self-stretch text-black text-lg font-semibold font-['Plus Jakarta Sans'] leading-7">
                     Company
                   </div>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  <Link
+                    href="/privacy"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Privacy Policy
-                  </a>
-                  <a className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+                  </Link>
+                  <Link
+                    href="/terms"
+                    className="self-stretch hover:text-primary text-slate-700 text-base font-medium font-['Plus Jakarta Sans'] leading-normal cursor-pointer transition-colors"
+                  >
                     Terms of Use
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Bottom Section */}
         <div className="w-full h-[100px] bg-primary flex justify-end md:justify-between items-center px-[20px] lg:px-[51px] md:py-12 py-5">
-          <div
-            className="h-auto justify-end items-center gap-6 hidden md:flex"
-            style={{ marginLeft: "-210px" }}
-          >
-            <img
+          <div className="h-auto justify-end items-center gap-6 hidden md:flex -ml-52">
+            <Image
               src={planeImage}
-              alt=""
-              style={{ height: "auto", width: "95%" }}
+              alt="Plane"
+              width={200}
+              height={60}
+              className="h-auto w-[95%]"
+              priority
             />
           </div>
-          <p className="text-white text-lg font-medium font-['Plus Jakarta Sans'] leading-7 pl-[0px] md:pl-10 ">
+          <p className="text-white text-lg font-medium font-['Plus Jakarta Sans'] leading-7 pl-0 md:pl-10">
             No Bull, Just Board!
           </p>
         </div>

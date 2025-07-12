@@ -1,57 +1,88 @@
+import React from 'react';
+import Image from 'next/image';
+
 const HomeInfo1: React.FC = () => {
   return (
-    <div className="">
-      <div className="text-center ">
-        <div className="flex flex-col md:flex-row border-b border-gray-100 justify-between items-center">
-          <div className="flex-col justify-start items-center gap-[25px] inline-flex">
-            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100">
-              <img className="p-4" src="/assets/search_1.svg"></img>
+    <div className="w-full">
+      <div className="text-center">
+        <div className="flex flex-col lg:flex-row border-b border-gray-100 justify-between items-center gap-8 lg:gap-4 pb-8">
+          {/* Step 1 - Find Journey */}
+          <div className="flex flex-col items-center gap-6 max-w-sm">
+            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100 p-4">
+              <Image 
+                src="/assets/search_1.svg" 
+                alt="Search flights icon"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
-            <div className="flex-col justify-center items-center gap-4 flex">
-              <div className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h3 className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
                 Find Your Journey in a Flash
-              </div>
-              <div className="w-[390px] text-center text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+              </h3>
+              <p className="text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal max-w-sm">
                 Discover flights that suit your plans. Start your adventure with
                 a simple search.
-              </div>
+              </p>
             </div>
           </div>
-          <div className="flex-col justify-start items-center gap-[27px] inline-flex">
-            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100">
-              <img className="px-4" src="/assets/take.svg"></img>
+
+          {/* Step 2 - Tailor Journey */}
+          <div className="flex flex-col items-center gap-6 max-w-sm">
+            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100 p-4">
+              <Image 
+                src="/assets/take.svg" 
+                alt="Customize journey icon"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
-            <div className="flex-col justify-center items-center gap-4 flex">
-              <div className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h3 className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
                 Tailor Your Journey, Your Way
-              </div>
-              <div className="w-[390px] text-center text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+              </h3>
+              <p className="text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal max-w-sm">
                 Make it uniquely yours. Add details, select seats, and choose
                 your in-flight delights.
-              </div>
+              </p>
             </div>
           </div>
-          <div className="flex-col justify-start items-center gap-7 inline-flex">
-            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100">
-              <img className="" src="/assets/smooth.svg"></img>
+
+          {/* Step 3 - Smooth Boarding */}
+          <div className="flex flex-col items-center gap-6 max-w-sm">
+            <div className="relative bg-gradient-to-b from-emerald-100 to-white rounded-2xl border border-gray-100 p-4">
+              <Image 
+                src="/assets/smooth.svg" 
+                alt="Smooth boarding icon"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+              />
             </div>
-            <div className="flex-col justify-center items-center gap-4 flex">
-              <div className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h3 className="text-neutral-900 text-xl font-semibold font-['Plus Jakarta Sans'] leading-7">
                 Smooth Boarding Awaits You
-              </div>
-              <div className="w-[390px] text-center text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal">
+              </h3>
+              <p className="text-gray-500 text-base font-medium font-['Plus Jakarta Sans'] leading-normal max-w-sm">
                 Ready for takeoff? Board with confidence using your digital
                 boarding pass.
-              </div>
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <div className=" py-12 ">
-        <img
-          className="block mr-auto ml-auto"
+
+      {/* Download Section */}
+      <div className="py-12 flex justify-center">
+        <Image
           src="/assets/download.svg"
-          alt=""
+          alt="Download app"
+          width={200}
+          height={100}
+          className="max-w-full h-auto"
+          priority
         />
       </div>
     </div>
