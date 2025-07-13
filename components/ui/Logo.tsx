@@ -1,21 +1,29 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Logo: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  
   return (
     <button
       onClick={() => {
-        navigate("/");
+        router.push("/");
       }}
-      className="h-[51.79px] justify-center items-center md:gap-[10.71px] flex"
+      className="flex h-[52px] items-center gap-3 transition-opacity hover:opacity-80"
     >
-      <div className="w-[52px] h-[52px] relative md:pr-12">
-        <div className="w-[46px] h-[46px] top-[2px] absolute bg-primary rounded-full">
-          <img src="/assets/airplane.svg" className=" w-full h-full "></img>
+      <div className="relative flex h-12 w-12 items-center justify-center">
+        <div className="absolute inset-0 top-0.5 h-[46px] w-[46px] rounded-full bg-primary flex items-center justify-center">
+          <Image 
+            src="/assets/airplane.svg" 
+            alt="Airplane" 
+            width={24}
+            height={24}
+            className="object-contain"
+          />
         </div>
       </div>
-      <div className="hidden md:block text-neutral-900 text-4xl font-medium font-['Plus Jakarta Sans'] leading-[54px]">
+      <div className="hidden text-4xl font-medium font-['Plus Jakarta Sans'] leading-[54px] text-neutral-900 md:block">
         SkyExplorer
       </div>
     </button>

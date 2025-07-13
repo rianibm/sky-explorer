@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Logo from "../ui/Logo";
 import { Layout, Dropdown } from "antd";
 import ReactCountryFlag from "react-country-flag";
 import Image from "next/image";
-import Chevron from "/assets/chevron-down.svg";
-import IconMenu from "/assets/menu.svg";
-import IconUser from "/assets/user.svg";
 import { useRouter } from "next/router";
 import { MenuProps } from "antd/lib";
 import dayjs from "dayjs";
@@ -16,6 +13,11 @@ import Link from "next/link";
 dayjs.extend(customParseFormat);
 
 const { Header } = Layout;
+
+// SVG paths as strings
+const Chevron = "/assets/chevron-down.svg";
+const IconMenu = "/assets/menu.svg";
+const IconUser = "/assets/user.svg";
 
 const api_base_url = "https://be-java-master-production.up.railway.app/api";
 // const api_base_url = "https://be-java-production.up.railway.app";
@@ -30,53 +32,13 @@ const HeaderComponent: React.FC = () => {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Initialize token from localStorage on client side
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem("access_token");
-      setToken(storedToken);
-      setIsLoading(false);
-    }
-  }, []);
+  // Memoize fetchName function to prevent unnecessary re-renders
+  const fetchName = useCallback(async () => {
+    if (!token) return;
 
-  useEffect(() => {
-    if (!isLoading) {
-      if (!token) {
-        router.push("/login");
-      } else {
-        fetchName();
-      }
-    }
-  }, [token, isLoading, router]);
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setProfileMenuVisible(false);
-      }
-    };
-
-    const handleWindowResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    window.addEventListener("resize", handleWindowResize);
-    handleWindowResize(); // Check initial window size
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  const fetchName = async () => {
     try {
       const myHeaders = new Headers();
-      myHeaders.append("Authorization", "Bearer " + token!);
+      myHeaders.append("Authorization", "Bearer " + token);
       myHeaders.append("Content-Type", "application/json");
 
       const response = await fetch(api_base_url + "/users/me", {
@@ -101,19 +63,64 @@ const HeaderComponent: React.FC = () => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [token, router]);
 
-  const handleProfileClick = () => {
+  // Initialize token from localStorage on client side
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem("access_token");
+      setToken(storedToken);
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Handle token changes and fetch user data
+  useEffect(() => {
+    if (!isLoading) {
+      if (!token) {
+        router.push("/login");
+      } else {
+        fetchName();
+      }
+    }
+  }, [token, isLoading, router, fetchName]);
+
+  // Handle outside clicks and window resize
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setProfileMenuVisible(false);
+      }
+    };
+
+    const handleWindowResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    window.addEventListener("resize", handleWindowResize);
+    handleWindowResize(); // Check initial window size
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  const handleProfileClick = useCallback(() => {
     setProfileMenuVisible(!isProfileMenuVisible);
-  };
+  }, [isProfileMenuVisible]);
 
-  const handleStatus = () => {
+  const handleStatus = useCallback(() => {
     router.push("/status");
-  };
+  }, [router]);
 
-  const handleSignUp = () => {
+  const handleSignUp = useCallback(() => {
     router.push("/signup");
-  };
+  }, [router]);
 
   const CabinItems: MenuProps["items"] = [
     {
@@ -173,34 +180,34 @@ const HeaderComponent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Header className="sticky top-0 z-50 flex items-center bg-white border-b border-gray-200 px-4 lg:px-8">
-        <div className="flex justify-between items-center w-full">
+      <Header className="sticky top-0 z-50 flex items-center border-b border-gray-200 bg-white px-4 lg:px-8">
+        <div className="flex w-full items-center justify-between">
           <Logo />
-          <div className="animate-pulse bg-gray-200 h-8 w-24 rounded"></div>
+          <div className="h-8 w-24 animate-pulse rounded bg-gray-200"></div>
         </div>
       </Header>
     );
   }
 
   return (
-    <Header className="sticky top-0 z-50 flex items-center bg-white border-b border-gray-200 px-4 lg:px-8 h-16">
-      <div className="flex justify-between items-center w-full max-w-7xl mx-auto">
+    <Header className="sticky top-0 z-50 flex h-16 items-center border-b border-gray-200 bg-white px-4 lg:px-8">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
         {/* Left Section - Logo and Navigation */}
         <div className="flex items-center gap-8">
           <Logo />
           
           {/* Desktop Navigation */}
           {!isMobile && (
-            <nav className="hidden lg:flex items-center gap-6">
+            <nav className="hidden items-center gap-6 lg:flex">
               <Link 
                 href="/explore"
-                className="text-neutral-900 text-lg font-medium font-['Plus Jakarta Sans'] leading-7 hover:text-primary transition-colors"
+                className="text-lg font-medium font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-colors hover:text-primary"
               >
                 Explore
               </Link>
               
               <button
-                className="text-neutral-900 text-lg font-medium font-['Plus Jakarta Sans'] hover:text-primary leading-7 cursor-pointer transition-colors"
+                className="cursor-pointer text-lg font-medium font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-colors hover:text-primary"
                 onClick={handleStatus}
               >
                 Status
@@ -211,7 +218,7 @@ const HeaderComponent: React.FC = () => {
                 placement="bottomLeft"
                 trigger={['hover']}
               >
-                <button className="flex items-center text-neutral-900 text-lg font-medium font-['Plus Jakarta Sans'] leading-7 hover:text-primary transition-colors">
+                <button className="flex items-center text-lg font-medium font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-colors hover:text-primary">
                   <span className="mr-2">Cabin</span>
                   <Image src={Chevron} alt="Chevron" width={16} height={16} />
                 </button>
@@ -222,7 +229,7 @@ const HeaderComponent: React.FC = () => {
                 placement="bottomLeft"
                 trigger={['hover']}
               >
-                <button className="flex items-center text-neutral-900 text-lg font-medium font-['Plus Jakarta Sans'] leading-7 hover:text-primary transition-colors">
+                <button className="flex items-center text-lg font-medium font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-colors hover:text-primary">
                   <span className="mr-2">Baggage</span>
                   <Image src={Chevron} alt="Chevron" width={16} height={16} />
                 </button>
@@ -234,7 +241,7 @@ const HeaderComponent: React.FC = () => {
         {/* Right Section */}
         <div className="flex items-center gap-4 lg:gap-8">
           {/* Currency Selector */}
-          <div className="hidden sm:flex items-center gap-4 text-neutral-900 text-lg font-medium font-['Plus Jakarta Sans'] leading-7 hover:text-primary cursor-pointer transition-colors">
+          <div className="hidden cursor-pointer items-center gap-4 text-lg font-medium font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-colors hover:text-primary sm:flex">
             <ReactCountryFlag 
               countryCode="ID" 
               svg 
@@ -246,16 +253,16 @@ const HeaderComponent: React.FC = () => {
           {/* User Section */}
           {token ? (
             <div
-              className="flex items-center gap-3 border border-gray-200 rounded-lg px-3 py-2 hover:border-primary hover:text-primary text-neutral-900 text-base lg:text-lg font-semibold font-['Plus Jakarta Sans'] leading-7 cursor-pointer transition-all duration-200"
+              className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 px-3 py-2 text-base font-semibold font-['Plus Jakarta Sans'] leading-7 text-neutral-900 transition-all duration-200 hover:border-primary hover:text-primary lg:text-lg"
               onClick={handleProfileClick}
               ref={dropdownRef}
             >
-              <div className="bg-gray-200 rounded-xl p-2">
+              <div className="rounded-xl bg-gray-200 p-2">
                 <Image src={IconUser} alt="User Icon" width={16} height={16} />
               </div>
               
               {!isMobile && (
-                <span className="hidden sm:block truncate max-w-24">
+                <span className="hidden max-w-24 truncate sm:block">
                   {userName || 'User'}
                 </span>
               )}
@@ -274,9 +281,9 @@ const HeaderComponent: React.FC = () => {
           ) : (
             <button
               onClick={handleSignUp}
-              className="bg-primary hover:bg-primary-dark disabled:bg-gray-400 text-white font-bold py-2 px-4 lg:px-6 rounded-md transition-colors duration-200 shadow-sm"
+              className="rounded-md bg-primary px-4 py-2 font-bold text-white shadow-sm transition-colors duration-200 hover:bg-primary-dark disabled:bg-gray-400 lg:px-6"
             >
-              <span className="text-sm lg:text-base font-['Plus Jakarta Sans']">
+              <span className="text-sm font-['Plus Jakarta Sans'] lg:text-base">
                 Sign Up
               </span>
             </button>
@@ -284,7 +291,7 @@ const HeaderComponent: React.FC = () => {
 
           {/* Mobile Menu Button */}
           {isMobile && (
-            <button className="lg:hidden p-2">
+            <button className="p-2 lg:hidden">
               <Image src={IconMenu} alt="Mobile Menu" width={20} height={20} />
             </button>
           )}

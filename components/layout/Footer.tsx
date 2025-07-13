@@ -1,13 +1,15 @@
 import Logo from "../ui/Logo";
 import Image from "next/image";
-import planeImage from "/assets/plane-footer.svg";
-import IG from "/assets/medsos-ig.svg";
-import twitter from "/assets/medsos-twitter.svg";
-import tiktok from "/assets/medsos-tiktok.svg";
-import facebook from "/assets/medsos-fb.svg";
-import youtube from "/assets/medsos-youtube.svg";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+// SVG paths as strings
+const planeImage = "/assets/plane-footer.svg";
+const IG = "/assets/medsos-ig.svg";
+const twitter = "/assets/medsos-twitter.svg";
+const tiktok = "/assets/medsos-tiktok.svg";
+const facebook = "/assets/medsos-fb.svg";
+const youtube = "/assets/medsos-youtube.svg";
 
 const HomeFooter: React.FC = () => {
   const router = useRouter();
